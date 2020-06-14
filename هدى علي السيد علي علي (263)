@@ -1,0 +1,156 @@
+create database hotel ;
+use hotel ;
+create table emplyee (
+e_ID int primary key , 
+e_Name varchar(255) ,
+e_address varchar(255) ,
+e_phone int
+);
+create table hotels (
+h_ID int primary key , 
+h_Name varchar(255) ,
+h_address varchar(255) ,
+h_phone int ,
+e_ID int foreign key references emplyee (e_ID)
+);
+create table room (
+r_ID int primary key , 
+rdescription varchar(255) ,
+h_ID int foreign key references hotels (h_ID)
+);
+create table customers (
+c_ID int primary key , 
+c_Name varchar(255) ,
+c_Email varchar(255) ,
+c_phone int
+);
+create table booking (
+b_ID int primary key , 
+b_Date int ,
+r_ID int foreign key references room (r_ID) ,
+c_ID int foreign key references customers (c_ID) ,
+price int
+);
+use hotel ;
+insert into emplyee 
+values (1 , 'ola ahmed' , 'alex.' , 1111);
+insert into customers 
+values (2 , 'ali' , 'aliali@gmail.com' , 2222);
+insert into hotels (h_ID , h_Name , h_address , h_phone)
+values (3 , 'sherton' , 'alex.' , 3333);
+insert into room (r_ID , rdescription)
+values (4 , 'single');
+insert into booking (b_ID , b_Date , price)
+values (5 , 20/3/2019 , 25 ); 
+use hotel ;
+insert into emplyee 
+values (6 , 'sara m7md' , 'cairo' , 1211);
+insert into customers 
+values (7 , 'ali' , 'aliali@gmail.com' , 2222);
+insert into hotels (h_ID , h_Name , h_address , h_phone)
+values (8 , 'tolip' , 'alex.' , 8888);
+insert into room (r_ID , rdescription)
+values (9 , 'double');
+insert into booking (b_ID , b_Date , price)
+values (10 , 6/5/2019 , 18 );
+delete from emplyee where e_ID = 6 ;
+delete from customers where c_Email = 'aliali@gmail.com' ;
+delete from hotels where h_phone = 8888 ;
+delete from room where rdescription = 'double' ;
+delete from booking where b_Date = 6/5/2019 ;
+update emplyee
+set e_address = 'cairo'
+where e_ID = 1 ;
+update customers
+set c_Email = 'ali@gmail.com'
+where c_Email = 'aliali@gmail.com' ;
+update hotels
+set h_Name = 'nile'
+where h_Name = 'sherton' ;
+update room
+set rdescription = 'trible'
+where r_ID = 4 ;
+update booking
+set b_Date = 30/8/2019
+where b_ID = 5 ;
+select rdescription , h_Name 
+from room 
+inner join hotels on room.h_ID = hotels.h_ID ; 
+select h_address , e_address
+from hotels 
+left join emplyee on hotels.e_ID = emplyee.e_ID ;
+select rdescription , price 
+from room 
+right join booking on booking.r_ID = room.r_ID ;
+select b_Date , c_Name 
+from booking
+full join customers on booking.c_ID =  customers.c_ID ;
+select h_phone , e_phone 
+from hotels , emplyee 
+where hotels.e_ID = emplyee.e_ID ;
+select count(price) , b_ID
+from booking 
+group by b_ID ; 
+select count(e_ID) , h_Name
+from hotels 
+group by h_Name ; 
+select rdescription
+from room 
+where r_ID = (select r_ID from booking where r_ID = 2) ; 
+select c_Name , c_Email
+from customers 
+where c_phone > (select count(b_ID) from booking ) ; 
+select h_address 
+from hotels 
+where h_address = (select e_address from emplyee where e_address = 'cairo') ; 
+use hotel ;
+select rdescription
+from room ;
+select * 
+from hotels ;
+select distinct b_date 
+from booking ;
+SELECT TOP 10 * 
+FROM emplyee ;
+SELECT TOP 10 PERCENT c_Name 
+FROM Customers; 
+SELECT b_ID 
+FROM booking
+ORDER BY b_date;
+SELECT b_ID 
+FROM booking
+ORDER BY price desc ;
+SELECT  h_Name
+FROM hotels
+ORDER BY h_address ASC;
+SELECT MIN(price)
+FROM booking ;
+select MAX(price)
+from booking ; 
+SELECT AVG(b_date)
+FROM booking ;
+SELECT SUM(b_date)
+FROM booking ;
+SELECT *
+FROM hotels
+WHERE h_ID = 1 ;
+SELECT c_Name
+FROM customers
+WHERE c_Name LIKE '%n%';
+SELECT c_Name
+FROM customers
+WHERE c_Name IN ('nadil', 'nadr');
+SELECT e_Name AS staffName
+FROM employee;
+SELECT b_ID
+FROM Booking
+WHERE Price BETWEEN 50 AND 80;
+SELECT e_phone , e_address
+FROM employee
+WHERE e_Name IN ('nadil', 'nadr') AND c_Name LIKE '%n%' ;
+SELECT e_phone , e_address
+FROM employee
+WHERE e_Name IN ('nadil', 'nadr') or c_Name LIKE '%n%' ;
+SELECT b_id
+FROM booking
+WHERE NOT price = 100;
